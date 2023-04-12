@@ -1,0 +1,67 @@
+folder structure
+
+root
+├── data
+│   └── input_20230404
+│       ├── 35sec
+│       │   ├── NA_0.20.csv
+│       │   ├── NA_0.18.csv
+│       │   ├── NA_0.16.csv
+│       │   ├── NA_0.14.csv
+│       │   ├── NA_0.13.csv
+│       │   ├── NA_0.12.csv
+│       │   ├── NA_0.11.csv
+│       │   ├── NA_0.10.csv
+│       │   └── NA_0.09.csv
+│       └── 180msec
+│           ├── NA_0.20.csv
+│           ├── NA_0.18.csv
+│           ├── NA_0.16.csv
+│           ├── NA_0.14.csv
+│           ├── NA_0.13.csv
+│           ├── NA_0.12.csv
+│           ├── NA_0.11.csv
+│           ├── NA_0.10.csv
+│           └── NA_0.08.csv
+├── output_files
+│   └── 20230404
+│       ├── graph
+│       │   ├── NA_35sec.png
+│       │   └── NA_180sec.png
+│       └── csv_files
+│           ├── NA_35sec.csv
+│           └── NA_180sec.csv
+└── src
+│   └── NA_time_analysis.py
+└── main.py
+
+
+folder_creator.py
+
+import os
+import csv
+
+# create the folder structure
+os.makedirs('data/input_20230404/35sec')
+os.makedirs('data/input_20230404/180msec')
+os.makedirs('output_files/20230404/graph')
+os.makedirs('output_files/20230404/csv_files')
+os.makedirs('src')
+
+# create the NA_0.20.csv file and write contents
+na020_data = [['Time', 'Voltage'], ['second', 'volt'], ['value', 'value']] + [['value', 'value'] for _ in range(100)]
+with open('data/input_20230404/35sec/NA_0.20.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerows(na020_data)
+
+# create the NA_35sec.csv file and write contents
+na35sec_data = [['Time', 'NA']] + [['value', 'value'] for _ in range(100)]
+with open('output_files/20230404/csv_files/NA_35sec.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerows(na35sec_data)
+
+# create the NA_180sec.csv file and write contents
+na180sec_data = [['Time', 'NA']] + [['value', 'value'] for _ in range(100)]
+with open('output_files/20230404/csv_files/NA_180sec.csv', 'w', newline='') as f:
+    writer = csv.writer(f)
+    writer.writerows(na180sec_data)
