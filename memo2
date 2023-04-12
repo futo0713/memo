@@ -1,0 +1,72 @@
+平均処理後のデータを格納する配列：averaged_data_listを作成する
+30秒後の平均値を格納する配列：average_listを作成する
+35sec時間の値を保存しておく配列：time_35secを作成する
+180msec時間の値を保存しておく配列：time_180msecを作成する
+出力の値を保存しておく配列：power_35secを作成する
+
+power_35sec.csvの2列目をpower_35secに格納
+
+35sec/NA_0.20.csvの1列目の値をtime_35secに格納
+180msec/NA_0.20.csvの1列目の値をtime_180msecに格納
+
+for NA_file in 35sec:
+  35sec/NA_**.csvをpandasで読み込む。
+  立ち上がりをトリガーにして、30秒間のデータを切り取る（class：DataAnalyze、関数：triggerを使用）
+  電圧値（2列目）を特殊移動平均処理でスムージングする（class：DataAnalyze、関数：smoothingを使用）
+  スムージングした電圧値の、後ろから500点の平均値をaverage_listに追加
+  スムージング処理後の電圧値の配列をaveraged_data_listに追加する
+
+出力の差分値を保存しておく配列：diff_powerを作成する
+電圧の差分値を保存しておく配列：diff_voltageを作成する
+平均処理後のデータの差分値を保存しておく配列：diff_volt_dataを作成する
+
+for i in range(8):
+  iの要素から、i-1の要素の差分を取ってdiff配列に格納する
+  diff_power.append(power_35sec[i]-power_35sec[i-1])
+  diff_voltage.append(average_list[i]-average_list[i-1])
+  diff_volt_data.append(averaged_data_list[i]-averaged_data_list[i-1]))
+  
+diff_power/diff_voltageの計算で、voltage-wattの換算配列：wpvを作成する
+diff_volt_dataの各要素位置に合った、wpvの要素値を掛けて、diff_watt_dataとする
+
+watt換算値を保存する配列：PD_watt_dataを作成する
+
+for i in range(9):
+  もとの配列diff_volt_dataから、先頭からi個分要素を減らす
+  残った要素を、要素位置ごとにすべて足す
+  その配列をPD_watt_dataに格納する
+  
+ return PD_watt_data
+ 
+ ★各NAを求める
+ 
+ NA=[0.2, 0.18, 0.16, ...]を設定
+ NA_86.5% を格納する配列：NA_86を設定
+ NA_98.0% を格納する配列：NA_98を設定
+ NA_99.0% を格納する配列：NA_99を設定
+ 
+ for i in zip(PD_watt_data[0], PD_watt_data[1], PD_watt_data[2], ...):
+  iのNA=0.20の位置の要素ですべての要素を割り、それを配列power_contentとする
+  
+  このiでnaを格納する配列をna_listと設定する
+  for j in range(len(power_content)):
+    もし、na_listの要素数が3より小さいとき、
+    NA[j]とNA[j-1]、power_content[j]とpower_content[j-1]の2点間の距離の公式f(na)を求める
+  
+    もし、na_listの要素数が1より小さいとき、
+    for k in range(300):
+      na区間を300で割って、f(Δna/300)=power_content < 99 となる最初のΔna/300をNA_86に格納する
+      na_listにΔna/300を格納する
+ 
+    もし、na_listの要素数が2より小さいとき、
+    for k in range(300):
+      na区間を300で割って、f(Δna/300)=power_content < 98 となる最初のΔna/300をNA_86に格納する
+      na_listにΔna/300を格納する
+     
+    もし、na_listの要素数が3より小さいとき、
+    for k in range(300):
+      na区間を300で割って、f(Δna/300)=power_content < 86.5 となる最初のΔna/300をNA_86に格納する
+      k roop をbreakする
+      j roop をbreakする
+      
+      
